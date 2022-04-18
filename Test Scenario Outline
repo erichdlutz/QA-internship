@@ -1,0 +1,57 @@
+Erich Lutz
+
+
+
+Test Scenarios for the Sign-up Flow and the Login Flow
+
+
+
+I. Test Scenario - Verify the login of a Gmail account.
+   A. Test Case - Enter a valid User Name and valid Password.
+   B. Pre-Condition - A Valid Gmail account is needed to Login.
+   C. Test Steps.
+     1. Enter User Name
+     2. Enter Password
+     3. Click “Login” button
+   D.	 Test Data
+     1. <Valid User Name> 
+     2. <Valid Password>
+   E.	Expected Result - Successful login
+   F.	Post Condition - User’s Email Inbox is shown.
+
+II.	Test Case Two 
+  A.	Test Case - Enter a valid User Name and an Invalid Password.
+  B. 	Pre-Condition - A Valid Gmail account is needed to Login.
+  C. 	Test Steps.
+    1. Enter User Name
+    2. Enter Password
+    3. Click “Login” button 
+  D. 	Test Data
+    1. <Valid User Name> 
+    2. <Invalid Password>
+  E.	Expected Result - A message stating “The email and password you entered don’t   
+      Match” is shown.
+III.	Test Case Three
+  A.	Test Case - Enter an Invalid User Name and a Valid Password.
+  B. 	Pre-Condition - A Valid Gmail account is needed to Login.
+  C. 	Test Steps.
+    1. Enter User Name
+    2. Enter Password
+    3. Click “Login” button 
+  D. 	Test Data
+    1. <Invalid User Name> 
+    2. <Valid Password>
+  E.	Expected Result - A message stating “The email and password you entered don’t   
+      Match” is shown.
+IV.	Test Case Four
+  A.	Test Case - Enter an Invalid User Name and an Invalid Password.
+  B. 	Pre-Condition - A Valid Gmail account is needed to Login.
+  C. 	Test Steps.
+    1. Enter User Name
+    2. Enter Password
+    3. Click “Login” button 
+  D. 	Test Data
+    1. <Invalid User Name> 
+    2. <Invalid Password>
+  E.	Expected Result - A message stating “The email and password you entered don’t   
+      Match” is shown.
