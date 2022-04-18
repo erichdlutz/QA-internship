@@ -1,0 +1,101 @@
+Erich Lutz
+
+Automated Test for Testing a Successful Login
+
+client => 
+
+{
+    // Define login page URL to be used in the script later on.
+    const logInPage = 'https://demonblaze.com/login';
+    // Define credentials for 3 different participants.
+    const credentials = 
+[
+        {email: 'example1@gmail.com', password: 'password123'},
+        {email: 'mock@gmail.com', password: 'TestPassword1'},
+        {email: 'mock2@gmail.com', password: '1PasswordTest'}
+    ];
+    // Define max acceptable wait time for element to become visible.
+    const waitTimeout = 10 * 1000;
+    // Select participant credentials from the hardcoded credential list.
+    const partCredentials = credentials[client.globals.participant.id];
+ 
+    client
+        // Navigate to the login page.
+        .url(logInPage)
+        // Wait for the page body to load in.
+        .waitForElementVisible('body', waitTimeout)
+        // Take a screenshot of the sign-in form.
+        .takeScreenshot('logInPage.png')
+        // Fill in the email field in the sign-in form.
+        .setValue('#username', partCredentials.email)
+        // Fill in the password field in the sign-in form.
+        .setValue('#password', partCredentials.password)
+        // Take a screenshot with filled in sign-in form fields.
+        .takeScreenshot('formFilled.png')
+        // Click the login button.
+        .click('button[type="submit"]')
+        // Wait until the projects page has been loaded after user authentication.
+        .waitForElementVisible('.projects', waitTimeout)
+        // Take a screenshot of the authenticated user on the projects page.
+        .takeScreenshot('loggedIn.png');
+} //end
+
+client => {
+    // Initialize variable for maximum wait time spent loading page/element
+    const loadTimeout = 30 * 1000;
+    // Number of times to navigate through the page
+    let iterations = 15;
+    // Define login page URL to be used in the script later on.
+    const logInPage = 'https://demonblaze.com/login';
+    // Define logout page URL to be used in the script later on.
+    const logOutPage = 'https://demonblaze.com/logout';
+    // Define a variable which will contain participant credentials.
+    let participantCredentials = {};
+    const loadCredentials = (client, done) => 
+{
+        // Calling request to retrieve data from https://example.com/credentials url
+        request( { url: 'https://example.com/credentials' }, (error, response, body) => 
+{
+                // If error was encountered this will stop test execution for particular participant.
+                if (error) throw new Error(error);
+                // Parsing received data into our credentials variable.
+                const credentials = JSON.parse(body);
+                // Retrieving single participant credentials based on unique internal Loadero variables.
+                participantCredentials = credentials[client.globals.participant.id];
+                // Calling done callback function signaling that this function has finished retrieving data and test script can continue.
+                done();
+            }//end request
+        );
+    }//end loadCredentials
+    // Requesting credentials from external source, parsing response and saving participant credentials variable.
+    client.perform((client, done) => loadCredentials(client, done));
+   
+    client.perform(() => 
+{
+       		 // Loops while specified iteration count has been reached
+       
+ while (iterations) 
+{
+           		 client
+                	// Navigate to the login page.
+                	.url(logInPage)
+                	// Wait for the page body to load in.
+                	.waitForElementVisible('body', loadTimeout)
+               	 // Fill in the email field in the sign-in form.
+                	.setValue('#username', participantCredentials.email)
+                	// Fill in the password field in the sign-in form.
+                	.setValue('#password', participantCredentials.password)
+                	// Click login button.
+                	.click('button[type="submit"]')
+                	// Wait until the projects page has been loaded after user authentication.
+                	.waitForElementVisible('.projects', loadTimeout)
+                	// Navigate to the logout page.
+                	.url(logOutPage)
+                	// Wait for the page body to load in.
+                	.waitForElementVisible('body', loadTimeout);
+ 
+            // Reduces remaining iteration count by 1
+            iterations--;
+        }//end while
+    });
+}//end
